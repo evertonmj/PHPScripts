@@ -4,19 +4,23 @@
  * You need curl installed on your system
  * @author Everton Mendonça - evertonmj@gmail.com
  */
-class MailChimpHelper extends CApplicationComponent{
-	//your URL
-	$mailchimpUrl = "";
-	//you API Key
-	$mailchimpApiKey = "";
 	
+
+class MailchimpHelper {
+	//your URL
+	private $mailchimpUrl = "<YOUR_MAILCHIMP_URL>";
+	//you API Key
+	private $mailchimpApiKey = "<YOUR MAILCHIMP_API_KEY>";
+	//list id
+	private $listId = "<LIST_ID>";
+
 	/**
 	* Get user information
 	**/
 	public function getUser($mailchimpId, $listId) {
 		$postdata = "";
-		$url = $mailchimpUrl . '/lists//' . $listId . '/members//' . $mailchimpId;
-		$header = 'Authorization: apikey ' . $mailchimpApiKey;
+		$url = $this->mailchimpUrl . '/lists//' . $this->listId . '/members//' . $mailchimpId;
+		$header = 'Authorization: apikey ' . $this->mailchimpApiKey;
 
 		return json_decode( self::sendData($postdata, $url, $header));
 	}
@@ -26,11 +30,9 @@ class MailChimpHelper extends CApplicationComponent{
 	* If your list has custom fields, just add them on "merge_fields" section
 	*/
 	public function insertUser($email, $name) {
-		
 		$postdata = '{"email_address": "'.$email.'", "status": "subscribed", "merge_fields": {"FNAME": "'.$name.'"}}';
-		$url = $mailchimpUrl . '/lists//' . $listId . '/members//';
-		$header = 'Authorization: apikey ' . $mailchimpApiKey;
-
+		$url = $this->mailchimpUrl . '/lists//' . $this->listId . '/members//';
+		$header = 'Authorization: apikey ' . $this->mailchimpApiKey;
 		return json_decode(self::sendData($postdata, $url, $header, "POST"));
 	}
 	
@@ -39,8 +41,8 @@ class MailChimpHelper extends CApplicationComponent{
 	**/
 	public function updateUser($email, $name, $listId) {
 		$postdata = '{"email_address": "'.$email.'", "status": "pending", "merge_fields": {"FNAME": "'.$name.'"}';
-		$url = $mailchimpUrl . '/lists//' . $listId  . '/members//';
-		$header = 'Authorization: apikey ' . $mailchimpApiKey;
+		$url = $this->mailchimpUrl . '/lists//' . $this->listId  . '/members//';
+		$header = 'Authorization: apikey ' . $this->mailchimpApiKey;
 
 		return json_decode(self::sendData($postdata, $url, $header, "PATCH"));
 	}
@@ -50,8 +52,8 @@ class MailChimpHelper extends CApplicationComponent{
 	**/	
 	public function deleteUser($mailchimpId, $listId) {
 		$postdata = "";
-		$url = $mailchimpUrl . '/lists//' . $listId . '/members//' . $mailchimpId;
-		$header = 'Authorization: apikey ' . $mailchimpApiKey;
+		$url = $this->mailchimpUrl . '/lists//' . $this->listId . '/members//' . $mailchimpId;
+		$header = 'Authorization: apikey ' . $this->mailchimpApiKey;
 
 		return json_decode(self::sendData($postdata, $url, $header, "DELETE"));
 	}
